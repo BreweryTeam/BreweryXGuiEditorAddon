@@ -273,7 +273,7 @@ class PotionRecipeEditorGui(recipe: BRecipe, val opener: Player) : AbstractGui()
             }
 
             ItemType.EDITOR_ALCOHOL -> {
-                recipe.alcohol = message.toIntOrNull() ?: return
+                recipe.alcohol = message.replace("%", "").trim().toIntOrNull() ?: return
             }
 
             ItemType.EDITOR_INGREDIENTS -> {
@@ -297,7 +297,7 @@ class PotionRecipeEditorGui(recipe: BRecipe, val opener: Player) : AbstractGui()
             }
 
             ItemType.EDITOR_COLOR -> {
-                recipe.color = PotionColor.fromString(message)
+                recipe.color = PotionColor.fromString(message.uppercase())
             }
 
             ItemType.EDITOR_DRINK_MESSAGE -> {

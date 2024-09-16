@@ -46,12 +46,12 @@ object BRecipeUtil {
             listOf(
                 //"",  // space
                 "&#E59FE3Difficulty&7: &f${recipe.difficulty}",
-                "&#E59FE3Cook Time&7: &f${recipe.cookingTime}",
+                "&#E59FE3Cook Time&7: &f${recipe.cookingTime}m",
                 "&#E59FE3Distill Runs&7: &f${recipe.distillRuns}",
-                "&#E59FE3Distill Time&7: &f${recipe.distillTime}",
+                "&#E59FE3Distill Time&7: &f${recipe.distillTime}s",
                 "&#E59FE3Barrel Type&7: &f${woodTypeToString(recipe.wood.toInt())}",
                 "&#E59FE3Aging Amount&7: &f${recipe.age.toInt()}",
-                "&#E59FE3Alcohol&7: &f${recipe.alcohol}",
+                "&#E59FE3Alcohol&7: &f${recipe.alcohol}%",
                 "&#E59FE3Glint&7: &f${recipe.hasGlint()}",
             )
         )
