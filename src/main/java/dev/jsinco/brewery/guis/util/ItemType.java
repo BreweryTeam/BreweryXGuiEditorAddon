@@ -5,6 +5,7 @@ import com.dre.brewery.utility.BUtil;
 import dev.jsinco.brewery.utility.Util;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
@@ -36,6 +37,7 @@ public final class ItemType {
     public static final ItemType MAIN_CREATE_POTION_RECIPE = new ItemType(49, "&#906DE3Create New Recipe", Material.NETHER_STAR, "&7Click to create a new recipe");
 
     // For the editor gui
+    public static final ItemType EDITOR_NO_PERMISSION_ITEM = new ItemType(null, "&c&lNo Permission", Material.BARRIER, "&7You do not have permission to edit this this attribute.");
     public static final ItemType EDITOR_CANCEL = new ItemType(0, "&c&lCancel", Material.REDSTONE, "&7Click to cancel your edits");
     public static final ItemType EDITOR_CONFIRM = new ItemType(8, "&a&lConfirm", Material.EMERALD, "&7Click to confirm your edits");
 
@@ -65,6 +67,7 @@ public final class ItemType {
 
 
     private String FIELD_NAME;
+    private String perm;
 
     private final Integer slot;
     private final String displayName;
@@ -76,6 +79,7 @@ public final class ItemType {
         this.displayName = displayName;
         this.m = m;
         this.lore = null;
+        this.perm = null;
     }
 
     public ItemType(@Nullable Integer slot, String displayName, Material m, String... lore) {
@@ -83,6 +87,7 @@ public final class ItemType {
         this.displayName = displayName;
         this.m = m;
         this.lore = Arrays.stream(lore).toList();
+        this.perm = null;
     }
 
     public ItemType(@Nullable Integer slot, String displayName, Material m, List<String> lore) {
@@ -90,6 +95,7 @@ public final class ItemType {
         this.displayName = displayName;
         this.m = m;
         this.lore = lore;
+        this.perm = null;
     }
 
     public ItemType() {
@@ -97,6 +103,7 @@ public final class ItemType {
         this.displayName = null;
         this.m = null;
         this.lore = null;
+        this.perm = null;
     }
 
     @Nullable
@@ -119,6 +126,9 @@ public final class ItemType {
         return lore;
     }
 
+    public String getPerm() {
+        return perm;
+    }
 
     @Nullable
     public ItemStack getItem() {
@@ -192,6 +202,7 @@ public final class ItemType {
                 try {
                     ItemType itemType = (ItemType) field.get(null);
                     itemType.FIELD_NAME = field.getName();
+                    itemType.perm = "brewery.gui." + field.getName().toLowerCase();
                     VALUES.put(field.getName(), itemType);
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();

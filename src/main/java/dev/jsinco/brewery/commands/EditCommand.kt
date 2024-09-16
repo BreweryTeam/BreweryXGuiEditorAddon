@@ -23,7 +23,7 @@ class EditCommand : AddonSubCommand {
             sender as? Player ?: return Util.msg(sender, "&cYou must be a player to use this command.")
         }
 
-        val gui = PotionRecipeEditorGui(recipe)
+        val gui = PotionRecipeEditorGui(recipe, player)
         gui.initializeGui()
         gui.open(player)
     }

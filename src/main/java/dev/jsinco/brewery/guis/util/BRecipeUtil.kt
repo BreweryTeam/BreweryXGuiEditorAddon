@@ -57,19 +57,24 @@ object BRecipeUtil {
         )
 
 
-        description.add("&#E59FE3Ingredients&7:")
-        recipe.ingredients.map {
-            description.add("&#DD73B7${Util.formatMaterialName(it.toConfigString())}")
+        if (recipe.ingredients.isNotEmpty()) {
+            description.add("&#E59FE3Ingredients&7:")
+            recipe.ingredients.map {
+                description.add("&#DD73B7${Util.formatMaterialName(it.toConfigString())}")
+            }
         }
-        description.add("&#E59FE3Effects&7:")
-        recipe.effects.map {
-            description.add("&#DD73B7${Util.formatMaterialName(it.toString())}")
+        if (recipe.effects.isNotEmpty()) {
+            description.add("&#E59FE3Effects&7:")
+            recipe.effects.map {
+                description.add("&#DD73B7${Util.formatMaterialName(it.toString())}")
+            }
         }
-        description.add("&#E59FE3Commands&7:")
-        combinedList(recipe.playercmds, recipe.servercmds).map {
-            description.add("&#DD73B7$it")
+        if (recipe.playercmds?.isNotEmpty() == true || recipe.servercmds?.isNotEmpty() == true) {
+            description.add("&#E59FE3Commands&7:")
+            combinedList(recipe.playercmds, recipe.servercmds).map {
+                description.add("&#DD73B7$it")
+            }
         }
-
         if (recipe.hasLore()) {
             description.add("&#E59FE3Lore&7:")
             description.addAll(recipe.lore!!.values.map { "&9$it" })

@@ -3,6 +3,7 @@ package dev.jsinco.brewery.commands
 import com.dre.brewery.recipe.BRecipe
 import dev.jsinco.brewery.guis.impl.PotionRecipeEditorGui
 import dev.jsinco.brewery.utility.Util
+import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
@@ -19,11 +20,12 @@ class CreateCommand : AddonSubCommand {
             Util.msg(sender, "A recipe with that ID already exists.")
             return
         }
+        val player = if (args.size > 1) Bukkit.getPlayerExact(args[1]) ?: sender as? Player ?: return else sender as? Player ?: return
 
         val recipe = Util.getDefaultRecipe(recipeID)
-        val gui = PotionRecipeEditorGui(recipe)
+        val gui = PotionRecipeEditorGui(recipe, player)
         gui.initializeGui()
-        gui.open(sender as Player)
+        gui.open(player)
     }
 
     override fun tabComplete(sender: CommandSender, args: Array<out String>): List<String>? {
@@ -35,6 +37,6 @@ class CreateCommand : AddonSubCommand {
     }
 
     override fun playerOnly(): Boolean {
-        return true
+        return false
     }
 }

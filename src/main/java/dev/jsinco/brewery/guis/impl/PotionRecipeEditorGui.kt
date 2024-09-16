@@ -17,7 +17,7 @@ import org.bukkit.event.inventory.ClickType
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.player.AsyncPlayerChatEvent
 
-class PotionRecipeEditorGui(recipe: BRecipe) : AbstractGui() {
+class PotionRecipeEditorGui(recipe: BRecipe, val opener: Player) : AbstractGui() {
 
     companion object {
         const val GUI_SIZE = 54
@@ -65,8 +65,12 @@ class PotionRecipeEditorGui(recipe: BRecipe) : AbstractGui() {
 
     override fun initializeGui() {
         for (itemType in ItemType.values()) {
+            var finalItemType = itemType
             if (!itemType.name.startsWith("EDITOR_")) continue
-            inv.setItem(itemType.slot ?: continue, itemType.item)
+            else if (!opener.hasPermission(itemType.perm)) {
+                finalItemType = ItemType.EDITOR_NO_PERMISSION_ITEM
+            }
+            inv.setItem(itemType.slot ?: continue, finalItemType.item)
         }
         this.updateDisplayablePotion()
     }
@@ -80,6 +84,10 @@ class PotionRecipeEditorGui(recipe: BRecipe) : AbstractGui() {
 
 
         when (itemType) {
+
+            ItemType.EDITOR_NO_PERMISSION_ITEM -> {
+                Util.msg(player, "You do not have permission to edit this attribute.")
+            }
 
             ItemType.EDITOR_CANCEL -> {
                 player.closeInventory()

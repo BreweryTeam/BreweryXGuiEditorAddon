@@ -56,7 +56,7 @@ class MainBreweryGui : AbstractGui() {
         when (itemType) {
             ItemType.MAIN_EDITABLE_POTION_RECIPE -> {
                 val recipeId = clickedItem.itemMeta.persistentDataContainer.get(NamespacedKey(BreweryPlugin.getInstance(), "data"), PersistentDataType.STRING) ?: return
-                val gui = PotionRecipeEditorGui(BRecipe.getMatching(recipeId) ?: return)
+                val gui = PotionRecipeEditorGui(BRecipe.getMatching(recipeId) ?: return, player)
                 gui.initializeGui()
                 gui.open(player)
             }
@@ -93,7 +93,7 @@ class MainBreweryGui : AbstractGui() {
 
         // Stupid way to write a builder, but I didn't write it. Probably needs to be changed.
         val recipe = Util.getDefaultRecipe(recipeID)
-        val gui = PotionRecipeEditorGui(recipe)
+        val gui = PotionRecipeEditorGui(recipe, player)
         gui.initializeGui()
         gui.open(player)
     }
