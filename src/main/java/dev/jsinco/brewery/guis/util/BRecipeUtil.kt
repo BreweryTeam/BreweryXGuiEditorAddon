@@ -2,6 +2,7 @@ package dev.jsinco.brewery.guis.util
 
 import com.dre.brewery.recipe.BRecipe
 import com.dre.brewery.utility.BUtil
+import com.dre.brewery.utility.Tuple
 import dev.jsinco.brewery.utility.Util
 import dev.jsinco.brewery.utility.Util.colorList
 import dev.jsinco.brewery.utility.Util.woodTypeToString
@@ -13,11 +14,12 @@ import org.bukkit.inventory.meta.PotionMeta
 
 object BRecipeUtil {
 
-    private fun combinedList(playerCommands: Map<Int, String>?, serverCommands: Map<Int, String>?): List<String> {
-        val combined: MutableList<String> = ArrayList()
-        if (playerCommands != null) combined.addAll(playerCommands.values.stream().map { s: String -> "player:/$s" }
+    private fun combinedList(playerCommands: List<Tuple<Int, String>>?, serverCommands: List<Tuple<Int, String>>?): List<String> {
+        // TODO: add '+'
+        val combined: MutableList<String> = mutableListOf()
+        if (playerCommands != null) combined.addAll(playerCommands.map { "player:/${it.second()}" }
             .toList())
-        if (serverCommands != null) combined.addAll(serverCommands.values.stream().map { s: String -> "server:/$s" }
+        if (serverCommands != null) combined.addAll(serverCommands.map { "server:/${it.second()}" }
             .toList())
         return combined
     }
@@ -77,7 +79,7 @@ object BRecipeUtil {
         }
         if (recipe.hasLore()) {
             description.add("&#E59FE3Lore&7:")
-            description.addAll(recipe.lore!!.values.map { "&9$it" })
+            description.addAll(recipe.lore!!.map { "&9${it.second()}" }) // TODO: add '+'
         }
 
 

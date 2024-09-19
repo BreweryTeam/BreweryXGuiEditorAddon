@@ -3,6 +3,7 @@ package dev.jsinco.brewery.utility
 import com.dre.brewery.filedata.BConfig
 import com.dre.brewery.recipe.BRecipe
 import com.dre.brewery.utility.BUtil
+import com.dre.brewery.utility.Tuple
 import dev.jsinco.brewery.BreweryXGuiEditorAddon
 import org.bukkit.command.CommandSender
 import java.text.SimpleDateFormat
@@ -75,14 +76,14 @@ object Util {
         }
     }
 
-    fun getConfigStringBasedOnQuality(values: Map<Int, String>): List<String> {
+    fun getConfigStringBasedOnQuality(values: List<Tuple<Int, String>>): List<String> {
         val list: MutableList<String> = mutableListOf()
         for (value in values) {
-            when (value.key) {
-                0 -> list.add(value.value)
-                1 -> list.add("+ ${value.value}")
-                2 -> list.add("++ ${value.value}")
-                3 -> list.add("+++ ${value.value}")
+            when (value.first()) {
+                0 -> list.add(value.second())
+                1 -> list.add("+ ${value.second()}")
+                2 -> list.add("++ ${value.second()}")
+                3 -> list.add("+++ ${value.second()}")
             }
         }
         return list

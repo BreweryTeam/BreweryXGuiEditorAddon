@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "dev.jsinco.brewery"
-version = "REV-1.0"
+version = "REV-2.0"
 
 repositories {
     mavenCentral()
@@ -14,7 +14,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("com.github.Jsinco:BreweryX:3.2.9")
+    compileOnly("com.github.Jsinco:BreweryX:3.3.0")
     compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")

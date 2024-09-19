@@ -240,7 +240,6 @@ class PotionRecipeEditorGui(recipe: BRecipe, val opener: Player) : AbstractGui()
 
         when (itemType) {
             ItemType.EDITOR_NAME -> {
-                println("message: $message")
                 recipe.name = message.split("/").toTypedArray()
             }
 
