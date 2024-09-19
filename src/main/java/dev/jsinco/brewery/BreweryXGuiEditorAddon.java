@@ -5,7 +5,7 @@ import com.dre.brewery.api.addons.AddonLogger;
 import com.dre.brewery.api.addons.BreweryAddon;
 import dev.jsinco.brewery.commands.AddonCommandManager;
 
-@AddonInfo(name = "BreweryXGuiEditorAddon", author = "Jsinco", version = "REV-1.0")
+@AddonInfo(name = "BreweryXGuiEditorAddon", author = "Jsinco", version = "REV-2.0", description = "A GUI editor for BreweryX")
 public class BreweryXGuiEditorAddon extends BreweryAddon {
 
     private static AddonLogger logger;
