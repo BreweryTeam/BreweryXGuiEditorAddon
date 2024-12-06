@@ -16,7 +16,7 @@ object Util {
     }
 
     fun log(m: String) {
-        GuiEditorAddon.getLogger().info(m)
+        GuiEditorAddon.getInstance().addonLogger.info(m)
     }
 
 
