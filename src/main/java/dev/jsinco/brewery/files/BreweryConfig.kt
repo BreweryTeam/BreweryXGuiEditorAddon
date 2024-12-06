@@ -4,6 +4,7 @@ import com.dre.brewery.BreweryPlugin
 import com.dre.brewery.recipe.BRecipe
 import dev.jsinco.brewery.utility.Util
 
+@Deprecated("BreweryX's configuration system has changed")
 object BreweryConfig {
 
     private val breweryInstance = BreweryPlugin.getInstance()
@@ -17,7 +18,7 @@ object BreweryConfig {
         section.set("name", recipe.name.joinToString("/"))
         section.set("ingredients", recipe.ingredients.map { it.toConfigString() })
         section.set("cookingtime", recipe.cookingTime)
-        section.set("distillruns", recipe.distillRuns)
+        section.set("distillruns", recipe.distillruns)
         section.set("distilltime", recipe.distillTime)
         section.set("wood", recipe.wood)
         section.set("age", recipe.age.toInt())

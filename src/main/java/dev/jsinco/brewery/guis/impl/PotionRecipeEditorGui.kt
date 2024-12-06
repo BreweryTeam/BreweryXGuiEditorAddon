@@ -1,9 +1,14 @@
 package dev.jsinco.brewery.guis.impl
 
+import com.dre.brewery.BarrelWoodType
+import com.dre.brewery.configuration.ConfigManager
+import com.dre.brewery.configuration.files.RecipesFile
+import com.dre.brewery.configuration.sector.capsule.ConfigRecipe
 import com.dre.brewery.recipe.BEffect
 import com.dre.brewery.recipe.BRecipe
 import com.dre.brewery.recipe.PotionColor
 import com.dre.brewery.utility.BUtil
+import com.dre.brewery.utility.Logging
 import com.dre.brewery.utility.StringParser
 import dev.jsinco.brewery.Events
 import dev.jsinco.brewery.files.BreweryConfig
@@ -32,7 +37,7 @@ class PotionRecipeEditorGui(recipe: BRecipe, val opener: Player) : AbstractGui()
 
     fun startListeningForAction(player: Player, itemType: ItemType, prompt: String) {
         listeningForAction = itemType
-        Util.msg(player, prompt)
+        Logging.msg(player, prompt)
         Events.listenForNextChat(player, this)
     }
 
@@ -86,15 +91,16 @@ class PotionRecipeEditorGui(recipe: BRecipe, val opener: Player) : AbstractGui()
         when (itemType) {
 
             ItemType.EDITOR_NO_PERMISSION_ITEM -> {
-                Util.msg(player, "You do not have permission to edit this attribute.")
+                Logging.msg(player, "You do not have permission to edit this attribute.")
             }
 
             ItemType.EDITOR_CANCEL -> {
                 player.closeInventory()
-                Util.msg(player, "Cancelled editing recipe.")
+                Logging.msg(player, "Cancelled editing recipe.")
             }
 
             ItemType.EDITOR_CONFIRM -> {
+                // Add to recipe cache
                 val recipes = BRecipe.getAllRecipes()
                 val index: Int? = recipes.find { it.id == recipe.id }?.let { recipes.indexOf(it) }
                 if (index != null) {
@@ -102,10 +108,36 @@ class PotionRecipeEditorGui(recipe: BRecipe, val opener: Player) : AbstractGui()
                 } else {
                     recipes.add(recipe)
                 }
-                // TODO: needs to save to BreweryX config
+                
+                // now add to recipes file
+                val recipesFile = ConfigManager.getConfig(RecipesFile::class.java)
+                val configRecipe = ConfigRecipe.builder()
+                    .name(recipe.name.joinToString("/"))
+                    .lore(recipe.lore)
+                    .difficulty(recipe.difficulty)
+                    .cookingTime(recipe.cookingTime)
+                    .distillRuns(recipe.distillruns.toInt())
+                    .distillTime(recipe.distillTime)
+                    .wood(recipe.wood)
+                    .age(recipe.age)
+                    .alcohol(recipe.alcohol)
+                    .ingredients(recipe.ingredients.map { it.toConfigString() })
+                    .effects(recipe.effects.map { it.toString() })
+                    .playerCommands(Util.getConfigStringBasedOnQuality(recipe.playercmds))
+                    .serverCommands(Util.getConfigStringBasedOnQuality(recipe.servercmds))
+                    .customModelData(recipe.cmData.joinToString("/"))
+                    .color(Integer.toHexString(recipe.color.color.asRGB()))
+                    .drinkMessage(recipe.drinkMsg)
+                    .drinkTitle(recipe.drinkTitle)
+                    .glint(recipe.isGlint)
+                    .build()
+                
+                
+                recipesFile.recipes[recipe.id] = configRecipe
+                recipesFile.saveAsync()
+                
                 player.closeInventory()
-                BreweryConfig.saveRecipeToConfig(recipe, player.name)
-                Util.msg(player, "Saved recipe! &8(${recipe.id})")
+                Logging.msg(player, "Saved recipe! &8(${recipe.id})")
             }
 
 
@@ -139,9 +171,9 @@ class PotionRecipeEditorGui(recipe: BRecipe, val opener: Player) : AbstractGui()
             }
 
             ItemType.EDITOR_DISTILL_RUNS -> {
-                val newValue = updateIntBasedOnClick(event.click, recipe.distillRuns.toInt())
+                val newValue = updateIntBasedOnClick(event.click, recipe.distillruns.toInt())
                 if (newValue != null) {
-                    recipe.distillRuns = newValue.toByte().coerceAtLeast(0)
+                    recipe.distillruns = newValue.toByte().coerceAtLeast(0)
                     this.updateDisplayablePotion()
                 } else {
                     this.startListeningForAction(player, itemType, "Enter a new number of distill runs for this recipe between &#B8FDAD0-127.")
@@ -159,9 +191,9 @@ class PotionRecipeEditorGui(recipe: BRecipe, val opener: Player) : AbstractGui()
             }
 
             ItemType.EDITOR_WOOD_TYPE -> {
-                val newValue = updateIntBasedOnClick(event.click, recipe.wood.toInt())
+                val newValue = updateIntBasedOnClick(event.click, recipe.wood.index)
                 if (newValue != null) {
-                    recipe.wood = newValue.toByte().coerceIn(0, 12)
+                    recipe.wood = BarrelWoodType.fromIndex(newValue.coerceIn(0, 13))
                     this.updateDisplayablePotion()
                 } else {
                     this.startListeningForAction(player, itemType, "Enter a new wood type for this recipe &#B8FDADany, birch, oak....")
@@ -256,7 +288,7 @@ class PotionRecipeEditorGui(recipe: BRecipe, val opener: Player) : AbstractGui()
             }
 
             ItemType.EDITOR_DISTILL_RUNS -> {
-                recipe.distillRuns = message.toByteOrNull() ?: return
+                recipe.distillruns = message.toByteOrNull() ?: return
             }
 
             ItemType.EDITOR_DISTILL_TIME -> {
@@ -264,11 +296,11 @@ class PotionRecipeEditorGui(recipe: BRecipe, val opener: Player) : AbstractGui()
             }
 
             ItemType.EDITOR_WOOD_TYPE -> {
-                recipe.wood = Util.stringToWoodType(message).toByte()
+                recipe.wood = BarrelWoodType.fromName(message) ?: return
             }
 
             ItemType.EDITOR_AGE -> {
-                recipe.setAge(message.toIntOrNull() ?: return)
+                recipe.age = (message.toIntOrNull() ?: return)
             }
 
             ItemType.EDITOR_ALCOHOL -> {
@@ -319,13 +351,3 @@ class PotionRecipeEditorGui(recipe: BRecipe, val opener: Player) : AbstractGui()
     }
 
 }
-/*
-fun updateItem(itemType: ItemType, value: Any) {
-        val item = itemType.item
-        val meta = item?.itemMeta ?: return
-
-        meta.setDisplayName(BUtil.color(itemType.displayName?.let { String.format(it, value) }))
-        item.itemMeta = meta
-        inv.setItem(itemType.slot ?: return, item)
-    }
- */

@@ -4,26 +4,24 @@ plugins {
 }
 
 group = "dev.jsinco.brewery"
-version = "REV-2.0"
+version = "BX3.4.3-SNAPSHOT"
 
 repositories {
     mavenCentral()
-    //maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
     maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://jitpack.io")
 }
 
 dependencies {
-    compileOnly("com.github.Jsinco:BreweryX:3.3.0")
-    compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
-    testImplementation(platform("org.junit:junit-bom:5.10.0"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
-    implementation(kotlin("stdlib-jdk8"))
+    compileOnly("com.github.BreweryTeam:BreweryX:snapshot-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
+    compileOnly(kotlin("stdlib-jdk8"))
 }
 
-tasks.test {
-    useJUnitPlatform()
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
 }
+
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(21)
 }

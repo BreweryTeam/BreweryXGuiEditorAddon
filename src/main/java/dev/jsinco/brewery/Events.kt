@@ -2,7 +2,6 @@ package dev.jsinco.brewery
 
 import com.dre.brewery.BreweryPlugin
 import dev.jsinco.brewery.guis.AbstractGui
-import dev.jsinco.brewery.utility.Util
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.format.NamedTextColor

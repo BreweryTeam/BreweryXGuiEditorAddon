@@ -1,13 +1,14 @@
 package dev.jsinco.brewery.commands
 
 import com.dre.brewery.BreweryPlugin
-import com.dre.brewery.commands.SubCommand
+import com.dre.brewery.api.addons.AddonCommand
+import com.dre.brewery.configuration.files.Lang
+import com.dre.brewery.utility.Logging
 import dev.jsinco.brewery.guis.impl.MainBreweryGui
-import dev.jsinco.brewery.utility.Util
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-class AddonCommandManager : SubCommand {
+class AddonCommandManager : AddonCommand {
 
     private val commands: Map<String, AddonSubCommand> = mapOf(
         "edit" to EditCommand(),
@@ -15,7 +16,7 @@ class AddonCommandManager : SubCommand {
         "create" to CreateCommand()
     )
 
-    override fun execute(plugin: BreweryPlugin, sender: CommandSender, label: String, rawArgs: Array<out String>) {
+    override fun execute(plugin: BreweryPlugin, lang: Lang, sender: CommandSender, label: String, rawArgs: Array<out String>) {
         val args = rawArgs.drop(1).toTypedArray()
 
         if (args.isEmpty()) { // Open gui if args are empty
@@ -29,10 +30,10 @@ class AddonCommandManager : SubCommand {
         val subCommand = commands[args[0]] ?: return
 
         if (!sender.hasPermission(subCommand.getPermission())) {
-            Util.msg(sender, "You do not have permission to execute this command.")
+            Logging.msg(sender, "You do not have permission to execute this command.")
             return
         } else if (subCommand.playerOnly() && sender !is Player) {
-            Util.msg(sender, "This command can only be executed by a player.")
+            Logging.msg(sender, "This command can only be executed by a player.")
             return
         }
 

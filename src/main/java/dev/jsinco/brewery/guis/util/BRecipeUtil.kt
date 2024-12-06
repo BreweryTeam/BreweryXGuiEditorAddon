@@ -35,7 +35,7 @@ object BRecipeUtil {
             meta.setCustomModelData(recipe.cmData.random())
         }
 
-        if (recipe.hasGlint()) {
+        if (recipe.isGlint) {
             meta.addEnchant(Enchantment.MENDING, 1, true)
         }
 
@@ -49,12 +49,12 @@ object BRecipeUtil {
                 //"",  // space
                 "&#E59FE3Difficulty&7: &f${recipe.difficulty}",
                 "&#E59FE3Cook Time&7: &f${recipe.cookingTime}m",
-                "&#E59FE3Distill Runs&7: &f${recipe.distillRuns}",
+                "&#E59FE3Distill Runs&7: &f${recipe.distillruns}",
                 "&#E59FE3Distill Time&7: &f${recipe.distillTime}s",
-                "&#E59FE3Barrel Type&7: &f${woodTypeToString(recipe.wood.toInt())}",
-                "&#E59FE3Aging Amount&7: &f${recipe.age.toInt()}",
+                "&#E59FE3Barrel Type&7: &f${recipe.wood.formattedName}",
+                "&#E59FE3Aging Amount&7: &f${if (recipe.age == 0) 40 else recipe.age}",
                 "&#E59FE3Alcohol&7: &f${recipe.alcohol}%",
-                "&#E59FE3Glint&7: &f${recipe.hasGlint()}",
+                "&#E59FE3Glint&7: &f${recipe.isGlint}",
             )
         )
 

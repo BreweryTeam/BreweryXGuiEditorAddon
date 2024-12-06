@@ -2,6 +2,7 @@ package dev.jsinco.brewery.guis.impl
 
 import com.dre.brewery.BreweryPlugin
 import com.dre.brewery.recipe.BRecipe
+import com.dre.brewery.utility.Logging
 import dev.jsinco.brewery.Events
 import dev.jsinco.brewery.guis.AbstractGui
 import dev.jsinco.brewery.guis.util.BRecipeUtil
@@ -70,7 +71,7 @@ class MainBreweryGui : AbstractGui() {
             }
 
             ItemType.MAIN_CREATE_POTION_RECIPE -> {
-                Util.msg(player, "Enter a new name for this recipe in chat.")
+                Logging.msg(player, "Enter a new name for this recipe in chat.")
                 Events.listenForNextChat(player, this)
             }
 
@@ -84,10 +85,10 @@ class MainBreweryGui : AbstractGui() {
         val recipeID = message.trim()
 
         if (recipeID.isEmpty()) {
-            Util.msg(player, "Invalid name.")
+            Logging.msg(player, "Invalid name.")
             return
         } else if (BRecipe.getById(recipeID) != null) {
-            Util.msg(player, "A recipe with that ID already exists.")
+            Logging.msg(player, "A recipe with that ID already exists.")
             return
         }
 
@@ -100,7 +101,7 @@ class MainBreweryGui : AbstractGui() {
 
     override fun open(player: Player) {
         if (paginatedGui.isEmpty) {
-            Util.msg(player, "No recipes found.")
+            Logging.msg(player, "No recipes found.")
             return
         }
         player.openInventory(paginatedGui.getPage(0))

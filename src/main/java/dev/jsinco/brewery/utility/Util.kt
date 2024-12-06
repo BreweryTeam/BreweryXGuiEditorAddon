@@ -1,22 +1,14 @@
 package dev.jsinco.brewery.utility
 
-import com.dre.brewery.filedata.BConfig
+import com.dre.brewery.BarrelWoodType
 import com.dre.brewery.recipe.BRecipe
 import com.dre.brewery.utility.BUtil
 import com.dre.brewery.utility.Tuple
-import dev.jsinco.brewery.BreweryXGuiEditorAddon
-import org.bukkit.command.CommandSender
+import dev.jsinco.brewery.GuiEditorAddon
 import java.text.SimpleDateFormat
 import java.util.Date
 
 object Util {
-    var PREFIX: String = BUtil.color(BConfig.pluginPrefix)
-
-    @JvmStatic
-    fun msg(player: CommandSender?, msg: String?) {
-        if (player == null) return
-        player.sendMessage(PREFIX + BUtil.color(msg))
-    }
 
     @JvmStatic
     fun colorList(m: List<String>): List<String> {
@@ -24,7 +16,7 @@ object Util {
     }
 
     fun log(m: String) {
-        BreweryXGuiEditorAddon.getLogger().info(m)
+        GuiEditorAddon.getLogger().info(m)
     }
 
 
@@ -76,7 +68,8 @@ object Util {
         }
     }
 
-    fun getConfigStringBasedOnQuality(values: List<Tuple<Int, String>>): List<String> {
+    fun getConfigStringBasedOnQuality(values: List<Tuple<Int, String>>?): List<String>? {
+        if (values == null) return null
         val list: MutableList<String> = mutableListOf()
         for (value in values) {
             when (value.first()) {
@@ -113,7 +106,7 @@ object Util {
             .addIngredient(BRecipe.loadIngredients(listOf("wheat/1"), id)[0])
             .cook(5)
             .distill(0, 40)
-            .age(0, 0)
+            .age(0, BarrelWoodType.ANY)
             .difficulty(1)
             .get()
     }

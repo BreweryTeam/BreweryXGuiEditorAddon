@@ -1,7 +1,7 @@
 package dev.jsinco.brewery.commands
 
+import com.dre.brewery.utility.Logging
 import dev.jsinco.brewery.Events
-import dev.jsinco.brewery.utility.Util
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
@@ -11,9 +11,9 @@ class CancelActionCommand : AddonSubCommand {
         sender as Player
         val cancelled = Events.stopListeningForNextChat(sender)
         if (cancelled) {
-            Util.msg(sender, "Cancelled action.")
+            Logging.msg(sender, "Cancelled action.")
         } else {
-            Util.msg(sender, "No action to cancel.")
+            Logging.msg(sender, "No action to cancel.")
         }
     }
 
