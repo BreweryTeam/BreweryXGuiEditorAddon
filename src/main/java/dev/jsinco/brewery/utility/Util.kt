@@ -20,54 +20,6 @@ object Util {
     }
 
 
-    // Something that REALLY needs to get done in BreweryX is swapping internal wood types from numbers to just strings.
-    // I don't know what idiot dev thought it was a good idea to use ints for wood types, but now it's a problem.
-    // wood: Wood of the barrel 0=any 1=Birch 2=Oak 3=Jungle 4=Spruce 5=Acacia 6=Dark Oak 7=Crimson 8=Warped 9=Mangrove 10=Cherry 11=Bamboo (12=Cut Copper)
-    fun stringToWoodType(woodType: String?): Int {
-        if (woodType == null) {
-            return 0
-        }
-        try {
-            return woodType.toInt()
-        } catch (ignored: NumberFormatException) {
-        }
-
-        return when (woodType.lowercase()) {
-            "birch" -> 1
-            "oak" -> 2
-            "jungle" -> 3
-            "spruce" -> 4
-            "acacia" -> 5
-            "dark_oak" -> 6
-            "crimson" -> 7
-            "warped" -> 8
-            "mangrove" -> 9
-            "cherry" -> 10
-            "bamboo" -> 11
-            "cut_copper" -> 12
-            else -> 0
-        }
-    }
-
-    @JvmStatic
-    fun woodTypeToString(woodType: Int): String {
-        return when (woodType) {
-            1 -> "Birch"
-            2 -> "Oak"
-            3 -> "Jungle"
-            4 -> "Spruce"
-            5 -> "Acacia"
-            6 -> "Dark Oak"
-            7 -> "Crimson"
-            8 -> "Warped"
-            9 -> "Mangrove"
-            10 -> "Cherry"
-            11 -> "Bamboo"
-            12 -> "Cut Copper"
-            else -> "Any"
-        }
-    }
-
     fun getConfigStringBasedOnQuality(values: List<Tuple<Int, String>>?): List<String>? {
         if (values == null) return null
         val list: MutableList<String> = mutableListOf()

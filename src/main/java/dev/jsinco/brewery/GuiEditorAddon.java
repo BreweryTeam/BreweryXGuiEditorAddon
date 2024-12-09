@@ -4,7 +4,7 @@ import com.dre.brewery.api.addons.AddonInfo;
 import com.dre.brewery.api.addons.BreweryAddon;
 import dev.jsinco.brewery.commands.AddonCommandManager;
 
-@AddonInfo(name = "GuiEditor", author = "Jsinco", version = "BX3.4.3-SNAPSHOT", description = "A GUI editor for modifying and adding potions BreweryX")
+@AddonInfo(name = "GuiEditor", author = "Jsinco", version = "BX3.4.3", description = "A GUI editor for modifying and adding potions BreweryX")
 public class GuiEditorAddon extends BreweryAddon {
 
     // TODO: Add permissions for specific actions?
