@@ -5,7 +5,6 @@ import com.dre.brewery.utility.BUtil
 import com.dre.brewery.utility.Tuple
 import dev.jsinco.brewery.utility.Util
 import dev.jsinco.brewery.utility.Util.colorList
-import dev.jsinco.brewery.utility.Util.woodTypeToString
 import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemFlag
